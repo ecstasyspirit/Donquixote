@@ -67,6 +67,14 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Images\donquixote-0.png" />
+    <Content Include="Images\donquixote-1.png" />
+    <Content Include="Images\donquixote-2.png" />
+    <Content Include="Images\donquixote-3.png" />
+    <Content Include="numbers.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
