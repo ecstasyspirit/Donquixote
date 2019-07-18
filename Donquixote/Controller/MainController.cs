@@ -210,19 +210,24 @@ namespace Donquixote.Controller
 
             Console.Write(GenerateTimestamp() + "Connecting ...");
 
-            switch (MainModel.Login(phone, password))
-            {
-                case true:
-                    Console.WriteLine(" ✓", Color.FromArgb(234, 153, 200));
-                    break;
+            var login = MainModel.LoginModel.Login(phone, password);
 
-                case false:
+            switch (login)
+            {
+                case "":
                     Console.WriteLine(" X", Color.FromArgb(194, 53, 200));
                     Console.WriteLine(GenerateTimestamp() + "Login failed.");
 
                     Console.ReadKey(true);
 
                     Environment.Exit(0);
+                    break;
+
+                default:
+                    Console.WriteLine(" ✓", Color.FromArgb(234, 153, 200));
+                    Console.WriteLine($"{GenerateTimestamp()}Fetched access token: {login}.");
+
+                    MainModel.AccessToken = login;
                     break;
             }
         }
@@ -237,7 +242,7 @@ namespace Donquixote.Controller
 
             DisplaySoftwareName();
 
-            var checkerResult = MainModel.SendMessages().Result;
+            var messengerResult = MainModel.SendMessages().Result;
 
             Console.ResetColor();
 
@@ -245,15 +250,15 @@ namespace Donquixote.Controller
 
             Console.WriteLine($"\n{GenerateTimestamp()}Checking completed!");
             Console.Write($"{GenerateTimestamp()}Sent ");
-            Console.Write(checkerResult.PhonesMessaged, Color.FromArgb(234, 153, 200));
+            Console.Write(messengerResult.PhonesMessaged, Color.FromArgb(234, 153, 200));
             Console.Write($" messages to ");
-            Console.Write(checkerResult.PhonesLoaded, Color.FromArgb(234, 153, 200));
+            Console.Write(messengerResult.PhonesLoaded, Color.FromArgb(234, 153, 200));
             Console.Write("phones in ");
-            Console.Write(checkerResult.AttackMode, Color.FromArgb(234, 153, 200));
+            Console.Write(messengerResult.AttackMode, Color.FromArgb(234, 153, 200));
             Console.Write(" mode at ");
-            Console.Write(checkerResult.AttackSpeed, Color.FromArgb(234, 153, 200));
+            Console.Write(messengerResult.AttackSpeed, Color.FromArgb(234, 153, 200));
             Console.Write(" speed || (");
-            Console.Write(checkerResult.PhoneSkiped, Color.FromArgb(194, 53, 200));
+            Console.Write(messengerResult.PhoneSkiped, Color.FromArgb(194, 53, 200));
             Console.WriteLine(" skipped).");
         }
     }

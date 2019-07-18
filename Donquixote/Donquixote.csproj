@@ -56,9 +56,9 @@
     <Compile Include="Models\DataStructuresModels\EnumModels\SpeedEnumModel.cs" />
     <Compile Include="Models\DataStructuresModels\EnumModels\StatusEnumModel.cs" />
     <Compile Include="Models\DataStructuresModels\EnumModels\ModeEnumModel.cs" />
-    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ConnectionsModels\LoginModel.cs" />
     <Compile Include="Models\MainModel.cs" />
-    <Compile Include="Models\MessageModel.cs" />
+    <Compile Include="Models\ConnectionsModels\MessageModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\MainView.cs" />
@@ -67,8 +67,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\ConnectionsModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

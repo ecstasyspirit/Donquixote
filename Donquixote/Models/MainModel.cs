@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Donquixote.Models.ConnectionsModels;
 
 namespace Donquixote.Models
 {
@@ -27,6 +28,9 @@ namespace Donquixote.Models
         public ConcurrentQueue<PhoneDataModel> Phones = new ConcurrentQueue<PhoneDataModel>();
 
         public List<PhoneDataModel> MessageFailed = new List<PhoneDataModel>();
+
+        public LoginModel LoginModel = new LoginModel();
+        public MessageModel MessageModel = new MessageModel();
         #endregion
 
         public float CalculateProgress()
@@ -89,13 +93,6 @@ namespace Donquixote.Models
             }
             else
                 return false;
-        }
-
-        public bool Login(string phone, string password)
-        {
-            Thread.Sleep(5000);
-
-            return false;
         }
 
         public Task<AttackResultDataModel> SendMessages()
