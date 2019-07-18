@@ -1,10 +1,6 @@
 ﻿using BetterHttpClient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Donquixote.Models.ConnectionsModels
 {
@@ -14,6 +10,11 @@ namespace Donquixote.Models.ConnectionsModels
         {
             try
             {
+                client.Headers = new WebHeaderCollection()
+                                {
+                                    { "Content-Type", "application/json" }
+                                };
+
                 var response = client.UploadString("https://lax.line2.com/sendMessage",
                     "POST",
                     $"{{\"accessToken\":\"{accessToken}\",\"to\":[\"1{phone}\"],\"message\":\"{message}\",\"apiKey\":\"B31540F46EEB482cB6A2200E66B6010CE66B60101\",\"apiVersion\":\"6\"}}");

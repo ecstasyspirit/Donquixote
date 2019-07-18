@@ -2,8 +2,9 @@
 {
     public enum SpeedEnumModel
     {
-        Normal,
-        Medium,
-        Fast
+        Normal = 5000,
+        Medium = 2500,
+        Fast = 500,
+        Risky = 50
     }
 }

@@ -13,7 +13,7 @@ namespace Donquixote.View
 
             Attack();
 
-            //SaveLogs();
+            SaveLogs();
 
             Console.ReadKey(true);
         }
@@ -39,6 +39,6 @@ namespace Donquixote.View
 
         public void Attack() => MainController.Attack();
 
-        //public void SaveLogs() => MainController.SaveLogs();
+        public void SaveLogs() => MainController.SaveLogs();
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Donquixote.Models.ConnectionsModels;
 using BetterHttpClient;
 using System.Net;
+using System.Drawing;
 
 namespace Donquixote.Models
 {
@@ -28,6 +29,8 @@ namespace Donquixote.Models
         public int PhonesMessaged = 0;
         public int PhonesSkiped = 0;
 
+        public object DisplayLock = new object();
+
         public ConcurrentQueue<PhoneDataModel> Phones = new ConcurrentQueue<PhoneDataModel>();
 
         public List<PhoneDataModel> MessagingFailed = new List<PhoneDataModel>();
@@ -35,6 +38,8 @@ namespace Donquixote.Models
         public LoginModel LoginModel = new LoginModel();
         public MessageModel MessageModel = new MessageModel();
         #endregion
+
+        public static string GenerateTimestamp() => $" {DateTime.Now.ToString("dd/MM | HH:mm:ss")}{new string(' ', 4)}";
 
         public float CalculateProgress()
         {
@@ -55,14 +60,14 @@ namespace Donquixote.Models
                     Console.Title = $"Donquixote :: {CurrentStatus}";
                     break;
                 case StatusEnumModel.Attacking:
-                    Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhonesMessengerIndex} on {PhonesLoaded} | {CalculateProgress()}% checked";
+                    Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhonesMessengerIndex} on {PhonesLoaded} | Failed to message {MessagingFailed.Count} | {CalculateProgress()}% done";
                     break;
             }
         }
 
         public bool ImportPhones()
         {
-            var fileName = "phones.txt";
+            var fileName = "numbers.txt";
 
             if (File.Exists(fileName))
             {
@@ -124,20 +129,13 @@ namespace Donquixote.Models
         {
             var messaging = true;
             var workerThreads = 0;
-            var workingThreads = 5;
+            var workingThreads = 1;
 
             if (workingThreads > Phones.Count)
                 workingThreads = Phones.Count;
 
             ThreadPool.SetMinThreads(workingThreads, 0);
             ThreadPool.SetMaxThreads(workingThreads, 0);
-
-            for (var i = 0; i < 3600; i++)
-            {
-                Phones.TryDequeue(out _);
-
-                PhonesMessengerIndex++;
-            }
 
             for (int i = 0; i < workingThreads; i++)
             {
@@ -163,28 +161,80 @@ namespace Donquixote.Models
 
         public void AttackAssistant(object _)
         {
-            while (!Phones.IsEmpty)
+            var client = new HttpClient()
             {
-                Phones.TryDequeue(out var phone);
+                UserAgent = "Line2/12.3 (iPad; iOS 11.2.5; Scale/2.00)",
+                Accept = "*/*",
+                AcceptEncoding = "br, gzip, deflate",
+                AcceptLanguage = "en;q=1",
+                Proxy = new Proxy("127.0.0.1:8888")
+            };
 
-                if (phone.Number == null || phone.Number == string.Empty)
-                    return;
+            switch (SelectedMode)
+            {
+                case ModeEnumModel.Spam:
+                    var successSpaceCount = Console.BufferWidth - 56;
+                    var failureSpaceCount = Console.BufferWidth - 52;
 
-                var client = new HttpClient()
+                    while (!Phones.IsEmpty)
+                    {
+                        Phones.TryDequeue(out var phone);
+
+                        if (phone.Number == null || phone.Number == string.Empty)
+                            return;
+
+                        switch (MessageModel.SendMessage(client, AccessToken, phone.Number, MaliciousMessage))
+                        {
+                            case 0:
+                                DisplayStatus(0, phone.Number, successSpaceCount);
+                                break;
+
+                            case 1:
+                                DisplayStatus(1, phone.Number, failureSpaceCount);
+
+                                MessagingFailed.Add(phone);
+                                break;
+                        }
+
+                        PhonesMessengerIndex++;
+
+                        switch (SelectedSpeed)
+                        {
+                            case SpeedEnumModel.Normal:
+                                Thread.Sleep((int)SpeedEnumModel.Normal);
+                                break;
+
+                            case SpeedEnumModel.Medium:
+                                Thread.Sleep((int)SpeedEnumModel.Medium);
+                                break;
+
+                            case SpeedEnumModel.Fast:
+                                Thread.Sleep((int)SpeedEnumModel.Fast);
+                                break;
+                        }
+                    }
+                    break;
+
+                case ModeEnumModel.Bomb:
+                    break;
+            }
+        }
+
+        public void DisplayStatus(int status, string phoneNumber, int spaceCount)
+        {
+            lock (DisplayLock)
+            {
+                switch (status)
                 {
-                    UserAgent = "Line2/12.3 (iPad; iOS 11.2.5; Scale/2.00)",
-                    Accept = "*/*",
-                    AcceptEncoding = "br, gzip, deflate",
-                    AcceptLanguage = "en;q=1",
-                    Headers = new WebHeaderCollection()
-                                {
-                                    { "Content-Type", "application/json" }
-                                }
-                };
+                    case 0:
+                        Console.Write($"{GenerateTimestamp()}Messaged {phoneNumber} successfully.{new string(' ', spaceCount)}");
+                        Console.WriteLine("✓", Color.FromArgb(234, 153, 200));
+                        break;
 
-                switch (MessageModel.SendMessage(client, AccessToken, phone.Number, MaliciousMessage))
-                {
-
+                    case 1:
+                        Console.Write($"{GenerateTimestamp()}Failed to message {phoneNumber}.{new string(' ', spaceCount)}");
+                        Console.WriteLine("X", Color.FromArgb(194, 53, 200));
+                        break;
                 }
             }
         }

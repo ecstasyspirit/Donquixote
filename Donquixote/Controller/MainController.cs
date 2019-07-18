@@ -3,6 +3,7 @@ using Donquixote.Models.DataStructuresModels.EnumModels;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using Console = Colorful.Console;
 
 namespace Donquixote.Controller
@@ -34,11 +35,9 @@ namespace Donquixote.Controller
             }
         }
 
-        public static string GenerateTimestamp() => $" {DateTime.Now.ToString("dd/MM | HH:mm:ss")}{new string(' ', 4)}";
-
         public void ImportPhones()
         {
-            Console.Write(GenerateTimestamp() + "Importing phone numbers from 'phones.txt' ...");
+            Console.Write(MainModel.GenerateTimestamp() + "Importing phone numbers from 'numbers.txt' ...");
 
             switch (MainModel.ImportPhones())
             {
@@ -48,7 +47,7 @@ namespace Donquixote.Controller
 
                 case false:
                     Console.WriteLine(" X", Color.FromArgb(194, 53, 200));
-                    Console.WriteLine(GenerateTimestamp() + "No 'phones.txt' file found in the startup directory.");
+                    Console.WriteLine(MainModel.GenerateTimestamp() + "No 'numbers.txt' file found in the startup directory.");
 
                     Console.ReadKey(true);
 
@@ -69,15 +68,15 @@ namespace Donquixote.Controller
             switch (mode)
             {
                 case 0:
-                    Console.Write($"{GenerateTimestamp()}Available modes: ");
+                    Console.Write($"{MainModel.GenerateTimestamp()}Available modes: ");
                     Console.WriteLine(string.Join(", ", availableModes), Color.FromArgb(234, 153, 200));
-                    Console.Write($"{GenerateTimestamp()}What mode do you want to use? ");
+                    Console.Write($"{MainModel.GenerateTimestamp()}What mode do you want to use? ");
                     Console.Write(availableModes[iOptionIndex], Color.FromArgb(234, 153, 200));
                     break;
                 case 1:
-                    Console.Write($"{GenerateTimestamp()}Available speeds: ");
+                    Console.Write($"{MainModel.GenerateTimestamp()}Available speeds: ");
                     Console.WriteLine(string.Join(", ", availableSpeeds), Color.FromArgb(234, 153, 200));
-                    Console.Write($"{GenerateTimestamp()}What speed do you want to use? ");
+                    Console.Write($"{MainModel.GenerateTimestamp()}What speed do you want to use? ");
                     Console.Write(availableSpeeds[iOptionIndex], Color.FromArgb(234, 153, 200));
                     break;
             }
@@ -90,7 +89,24 @@ namespace Donquixote.Controller
 
                 if (oKeyDown == ConsoleKey.Enter)
                 {
-                    Console.Write("\n");
+                    Console.ResetColor();
+
+                    switch (mode)
+                    {
+                        case 0:
+                            Console.Write($"\n{MainModel.GenerateTimestamp()}Selected mode [");
+                            Console.Write($"{MainModel.SelectedMode}", Color.FromArgb(234, 153, 200));
+                            Console.WriteLine($"].");
+                            break;
+
+                        case 1:
+                            Console.Write($"\n{MainModel.GenerateTimestamp()}Selected speed [");
+                            Console.Write($"{MainModel.SelectedSpeed}", Color.FromArgb(234, 153, 200));
+                            Console.Write($"] || pause between messages [");
+                            Console.Write($"{(int)MainModel.SelectedSpeed} ms", Color.FromArgb(234, 153, 200));
+                            Console.WriteLine($"].");
+                            break;
+                    }
                     break;
                 }
                 else if (oKeyDown == ConsoleKey.Backspace)
@@ -166,15 +182,13 @@ namespace Donquixote.Controller
                     }
                 }
             }
-
-            Console.ResetColor();
         }
 
         public void SetMessage()
         {
             while (MainModel.MaliciousMessage.Replace(" ", string.Empty).Length == 0)
             {
-                Console.Write(GenerateTimestamp() + "Set the message to use for the attack: ");
+                Console.Write(MainModel.GenerateTimestamp() + "Set the message to use for the attack: ");
 
                 Console.ForegroundColor = Color.FromArgb(234, 153, 200);
 
@@ -187,10 +201,10 @@ namespace Donquixote.Controller
                 Console.ResetColor();
 
                 if (MainModel.MaliciousMessage.Replace(" ", string.Empty).Length == 0)
-                    Console.WriteLine(GenerateTimestamp() + "Invalid message parameter, please set it to at least 1 character.");
+                    Console.WriteLine(MainModel.GenerateTimestamp() + "Invalid message parameter, please set it to at least 1 character.");
             }
 
-            Console.WriteLine(GenerateTimestamp() + "This is how the message will appear on the victims' devices:");
+            Console.WriteLine(MainModel.GenerateTimestamp() + "This is how the message will appear on the victims' devices:");
             Console.WriteLine($"{new string(' ', 21)}>>");
             Console.WriteLine(new string(' ', 21) + MainModel.MaliciousMessage.Replace("\\n", "\n" + new string(' ', 21)), Color.FromArgb(234, 153, 200));
             Console.WriteLine($"{new string(' ', 21)}<<");
@@ -201,7 +215,7 @@ namespace Donquixote.Controller
             if (MainModel.SelectedMode == ModeEnumModel.Bomb)
                 while (MainModel.MessengerRecursivity <= 0)
                 {
-                    Console.Write(GenerateTimestamp() + "Set the recursivity of the messenger to use for the attack: ");
+                    Console.Write(MainModel.GenerateTimestamp() + "Set the recursivity of the messenger to use for the attack: ");
 
                     Console.ForegroundColor = Color.FromArgb(234, 153, 200);
 
@@ -216,7 +230,7 @@ namespace Donquixote.Controller
                     {
                         Console.ResetColor();
 
-                        Console.Write(GenerateTimestamp() + "Invalid recursivity parameter, please set it to at least 1 and only use digits ");
+                        Console.Write(MainModel.GenerateTimestamp() + "Invalid recursivity parameter, please set it to at least 1 and only use digits ");
                         Console.Write("[0-9]", Color.FromArgb(194, 53, 200));
                         Console.WriteLine(".");
                     }
@@ -227,7 +241,7 @@ namespace Donquixote.Controller
 
         public void Login()
         {
-            Console.Write(GenerateTimestamp() + "Enter Line2 phone number: ");
+            Console.Write(MainModel.GenerateTimestamp() + "Enter Line2 phone number: ");
 
             Console.ForegroundColor = Color.FromArgb(234, 153, 200);
 
@@ -235,7 +249,7 @@ namespace Donquixote.Controller
 
             Console.ResetColor();
 
-            Console.Write(GenerateTimestamp() + "Enter Line2 password: ");
+            Console.Write(MainModel.GenerateTimestamp() + "Enter Line2 password: ");
 
             Console.ForegroundColor = Color.FromArgb(234, 153, 200);
 
@@ -243,7 +257,7 @@ namespace Donquixote.Controller
 
             Console.ResetColor();
 
-            Console.Write(GenerateTimestamp() + "Connecting ...");
+            Console.Write(MainModel.GenerateTimestamp() + "Connecting ...");
 
             var login = MainModel.LoginModel.Login(phone, password);
 
@@ -251,7 +265,7 @@ namespace Donquixote.Controller
             {
                 case "":
                     Console.WriteLine(" X", Color.FromArgb(194, 53, 200));
-                    Console.WriteLine(GenerateTimestamp() + "Login failed.");
+                    Console.WriteLine(MainModel.GenerateTimestamp() + "Login failed.");
 
                     Console.ReadKey(true);
 
@@ -260,7 +274,7 @@ namespace Donquixote.Controller
 
                 default:
                     Console.WriteLine(" ✓", Color.FromArgb(234, 153, 200));
-                    Console.WriteLine($"{GenerateTimestamp()}Fetched access token: {login}.");
+                    Console.WriteLine($"{MainModel.GenerateTimestamp()}Fetched access token: {login}.");
 
                     MainModel.AccessToken = login;
                     break;
@@ -269,7 +283,7 @@ namespace Donquixote.Controller
 
         public void Attack()
         {
-            Console.Write(GenerateTimestamp() + "Press any key to start the attack ...");
+            Console.Write(MainModel.GenerateTimestamp() + "Press any key to start the attack ...");
 
             Console.ReadKey(true);
 
@@ -283,8 +297,8 @@ namespace Donquixote.Controller
 
             SetConsoleTitle();
 
-            Console.WriteLine($"\n{GenerateTimestamp()}Attack completed!");
-            Console.Write($"{GenerateTimestamp()}Sent ");
+            Console.WriteLine($"\n{MainModel.GenerateTimestamp()}Attack completed!");
+            Console.Write($"{MainModel.GenerateTimestamp()}Sent ");
             Console.Write(messengerResult.PhonesMessaged, Color.FromArgb(234, 153, 200));
             Console.Write($" messages to ");
             Console.Write(messengerResult.PhonesLoaded, Color.FromArgb(234, 153, 200));
@@ -295,6 +309,24 @@ namespace Donquixote.Controller
             Console.Write(" speed || (");
             Console.Write(messengerResult.PhoneSkiped, Color.FromArgb(194, 53, 200));
             Console.WriteLine(" skipped).");
+        }
+
+        public void SaveLogs()
+        {
+            try
+            {
+                using (StreamWriter streamWriter = new StreamWriter("messaging-failed.txt", true))
+                {
+                    for (var i = 0; i < MainModel.MessagingFailed.Count; i++)
+                        streamWriter.WriteLine(MainModel.MessagingFailed[i].Number);
+                }
+
+                Console.WriteLine(MainModel.GenerateTimestamp() + "Saved all the phone numbers that were failed to be messaged under 'messaging-failed.txt'.");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(MainModel.GenerateTimestamp() + "Error while saving the phone numbers that were failed to be messaged.");
+            }
         }
     }
 }
