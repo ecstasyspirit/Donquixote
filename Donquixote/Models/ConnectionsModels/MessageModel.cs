@@ -10,20 +10,8 @@ namespace Donquixote.Models.ConnectionsModels
 {
     public class MessageModel
     {
-        public string SendMessage(string accessToken, string phone, string message)
+        public int SendMessage(HttpClient client, string accessToken, string phone, string message)
         {
-            var client = new HttpClient()
-            {
-                UserAgent = "Line2/12.3 (iPad; iOS 11.2.5; Scale/2.00)",
-                Accept = "*/*",
-                AcceptEncoding = "br, gzip, deflate",
-                AcceptLanguage = "en;q=1",
-                Headers = new WebHeaderCollection()
-                                {
-                                    { "Content-Type", "application/json" }
-                                }
-            };
-
             try
             {
                 var response = client.UploadString("https://lax.line2.com/sendMessage",
@@ -33,13 +21,13 @@ namespace Donquixote.Models.ConnectionsModels
                 client?.Dispose();
 
                 if (response.Contains("0}"))
-                    return "0";
+                    return 0;
                 else
-                    return string.Empty;
+                    return 1;
             }
             catch (Exception)
             {
-                return string.Empty;
+                return 1;
             }
         }
     }

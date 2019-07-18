@@ -7,19 +7,22 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Donquixote.Models.ConnectionsModels;
+using BetterHttpClient;
+using System.Net;
 
 namespace Donquixote.Models
 {
     public class MainModel
     {
         #region Public variables
-        public string PayloadMessage = "";
+        public string MaliciousMessage = "";
         public string AccessToken = "";
 
         public StatusEnumModel CurrentStatus = StatusEnumModel.Setup;
         public ModeEnumModel SelectedMode = ModeEnumModel.Spam;
         public SpeedEnumModel SelectedSpeed = SpeedEnumModel.Normal;
 
+        public int MessengerRecursivity = 0;
         public int PhonesLoaded = 0;
         public int PhonesMessengerIndex = 0;
         public int PhonesMessaged = 0;
@@ -27,7 +30,7 @@ namespace Donquixote.Models
 
         public ConcurrentQueue<PhoneDataModel> Phones = new ConcurrentQueue<PhoneDataModel>();
 
-        public List<PhoneDataModel> MessageFailed = new List<PhoneDataModel>();
+        public List<PhoneDataModel> MessagingFailed = new List<PhoneDataModel>();
 
         public LoginModel LoginModel = new LoginModel();
         public MessageModel MessageModel = new MessageModel();
@@ -119,15 +122,15 @@ namespace Donquixote.Models
 
         public void SpawnThreads()
         {
-            var checking = true;
+            var messaging = true;
             var workerThreads = 0;
-            var checkingThreads = 5;
+            var workingThreads = 5;
 
-            if (checkingThreads > Phones.Count)
-                checkingThreads = Phones.Count;
+            if (workingThreads > Phones.Count)
+                workingThreads = Phones.Count;
 
-            ThreadPool.SetMinThreads(checkingThreads, 0);
-            ThreadPool.SetMaxThreads(checkingThreads, 0);
+            ThreadPool.SetMinThreads(workingThreads, 0);
+            ThreadPool.SetMaxThreads(workingThreads, 0);
 
             for (var i = 0; i < 3600; i++)
             {
@@ -136,25 +139,53 @@ namespace Donquixote.Models
                 PhonesMessengerIndex++;
             }
 
-            for (int i = 0; i < checkingThreads; i++)
+            for (int i = 0; i < workingThreads; i++)
             {
                 Thread.Sleep(5);
 
-                //ThreadPool.QueueUserWorkItem(new WaitCallback(RequestDetails));
+                ThreadPool.QueueUserWorkItem(new WaitCallback(AttackAssistant));
             }
 
             ThreadPool.GetMaxThreads(out int maxWorkerThreads, out _);
 
-            while (checking)
+            while (messaging)
             {
                 ThreadPool.GetAvailableThreads(out workerThreads, out _);
 
                 if (workerThreads == maxWorkerThreads)
-                    checking = false;
+                    messaging = false;
                 else
                     Thread.Sleep(500);
 
                 SetConsoleTitle();
+            }
+        }
+
+        public void AttackAssistant(object _)
+        {
+            while (!Phones.IsEmpty)
+            {
+                Phones.TryDequeue(out var phone);
+
+                if (phone.Number == null || phone.Number == string.Empty)
+                    return;
+
+                var client = new HttpClient()
+                {
+                    UserAgent = "Line2/12.3 (iPad; iOS 11.2.5; Scale/2.00)",
+                    Accept = "*/*",
+                    AcceptEncoding = "br, gzip, deflate",
+                    AcceptLanguage = "en;q=1",
+                    Headers = new WebHeaderCollection()
+                                {
+                                    { "Content-Type", "application/json" }
+                                }
+                };
+
+                switch (MessageModel.SendMessage(client, AccessToken, phone.Number, MaliciousMessage))
+                {
+
+                }
             }
         }
     }

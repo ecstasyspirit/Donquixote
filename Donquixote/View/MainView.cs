@@ -11,14 +11,14 @@ namespace Donquixote.View
         {
             SetSession();
 
-            //Attack();
+            Attack();
 
             //SaveLogs();
 
             Console.ReadKey(true);
         }
 
-        private void SetSession()
+        public void SetSession()
         {
             MainController.SetConsoleTitle();
 
@@ -26,17 +26,19 @@ namespace Donquixote.View
 
             MainController.ImportPhones();
 
+            MainController.SelectModeSpeed(0);
+
             MainController.SelectModeSpeed(1);
 
-            MainController.SelectModeSpeed(2);
-
             MainController.SetMessage();
+
+            MainController.SetRecursivity();
 
             MainController.Login();
         }
 
-        //private void Attack() => MainController.Attack();
+        public void Attack() => MainController.Attack();
 
-        //private void SaveLogs() => MainController.SaveLogs();
+        //public void SaveLogs() => MainController.SaveLogs();
     }
 }

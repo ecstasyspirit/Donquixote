@@ -68,13 +68,13 @@ namespace Donquixote.Controller
 
             switch (mode)
             {
-                case 1:
+                case 0:
                     Console.Write($"{GenerateTimestamp()}Available modes: ");
                     Console.WriteLine(string.Join(", ", availableModes), Color.FromArgb(234, 153, 200));
                     Console.Write($"{GenerateTimestamp()}What mode do you want to use? ");
                     Console.Write(availableModes[iOptionIndex], Color.FromArgb(234, 153, 200));
                     break;
-                case 2:
+                case 1:
                     Console.Write($"{GenerateTimestamp()}Available speeds: ");
                     Console.WriteLine(string.Join(", ", availableSpeeds), Color.FromArgb(234, 153, 200));
                     Console.Write($"{GenerateTimestamp()}What speed do you want to use? ");
@@ -97,10 +97,10 @@ namespace Donquixote.Controller
                 {
                     switch (mode)
                     {
-                        case 1:
+                        case 0:
                             Console.Write(availableModes[iOptionIndex].ToString().Substring(availableModes[iOptionIndex].ToString().Length - 1, 1));
                             break;
-                        case 2:
+                        case 1:
                             Console.Write(availableSpeeds[iOptionIndex].ToString().Substring(availableSpeeds[iOptionIndex].ToString().Length - 1, 1));
                             break;
                     }
@@ -109,7 +109,7 @@ namespace Donquixote.Controller
                 {
                     switch (mode)
                     {
-                        case 1:
+                        case 0:
                             Console.Write(new string('\b', availableModes[iOptionIndex].ToString().Length + 1)
                                           + new string(' ', availableModes[iOptionIndex].ToString().Length + 1)
                                           + new string('\b', availableModes[iOptionIndex].ToString().Length + 1));
@@ -136,21 +136,21 @@ namespace Donquixote.Controller
 
                             MainModel.SelectedMode = availableModes[iOptionIndex];
                             break;
-                        case 2:
+                        case 1:
                             Console.Write(new string('\b', availableSpeeds[iOptionIndex].ToString().Length + 1)
                                           + new string(' ', availableSpeeds[iOptionIndex].ToString().Length + 1)
                                           + new string('\b', availableSpeeds[iOptionIndex].ToString().Length + 1));
 
                             switch (oKeyDown)
                             {
-                                case ConsoleKey.LeftArrow:
+                                case ConsoleKey.RightArrow:
                                 case ConsoleKey.DownArrow:
                                     if (iOptionIndex == availableSpeeds.Length - 1)
                                         iOptionIndex = 0;
                                     else
                                         iOptionIndex++;
                                     break;
-                                case ConsoleKey.RightArrow:
+                                case ConsoleKey.LeftArrow:
                                 case ConsoleKey.UpArrow:
                                     if (iOptionIndex == 0)
                                         iOptionIndex = availableSpeeds.Length - 1;
@@ -172,22 +172,57 @@ namespace Donquixote.Controller
 
         public void SetMessage()
         {
-            Console.Write(GenerateTimestamp() + "Enter the message to use for the attack: ");
+            while (MainModel.MaliciousMessage.Replace(" ", string.Empty).Length == 0)
+            {
+                Console.Write(GenerateTimestamp() + "Set the message to use for the attack: ");
 
-            Console.ForegroundColor = Color.FromArgb(234, 153, 200);
+                Console.ForegroundColor = Color.FromArgb(234, 153, 200);
 
-            var inputBuffer = new byte[2048];
-            var inputStream = Console.OpenStandardInput(inputBuffer.Length);
-            Console.SetIn(new StreamReader(inputStream, Console.InputEncoding, false, inputBuffer.Length));
+                var inputBuffer = new byte[2048];
+                var inputStream = Console.OpenStandardInput(inputBuffer.Length);
+                Console.SetIn(new StreamReader(inputStream, Console.InputEncoding, false, inputBuffer.Length));
 
-            MainModel.PayloadMessage = Console.ReadLine();
+                MainModel.MaliciousMessage = Console.ReadLine();
 
-            Console.ResetColor();
+                Console.ResetColor();
+
+                if (MainModel.MaliciousMessage.Replace(" ", string.Empty).Length == 0)
+                    Console.WriteLine(GenerateTimestamp() + "Invalid message parameter, please set it to at least 1 character.");
+            }
 
             Console.WriteLine(GenerateTimestamp() + "This is how the message will appear on the victims' devices:");
             Console.WriteLine($"{new string(' ', 21)}>>");
-            Console.WriteLine(new string(' ', 21) + MainModel.PayloadMessage.Replace("\\n", "\n" + new string(' ', 21)), Color.FromArgb(234, 153, 200));
+            Console.WriteLine(new string(' ', 21) + MainModel.MaliciousMessage.Replace("\\n", "\n" + new string(' ', 21)), Color.FromArgb(234, 153, 200));
             Console.WriteLine($"{new string(' ', 21)}<<");
+        }
+
+        public void SetRecursivity()
+        {
+            if (MainModel.SelectedMode == ModeEnumModel.Bomb)
+                while (MainModel.MessengerRecursivity <= 0)
+                {
+                    Console.Write(GenerateTimestamp() + "Set the recursivity of the messenger to use for the attack: ");
+
+                    Console.ForegroundColor = Color.FromArgb(234, 153, 200);
+
+                    try
+                    {
+                        MainModel.MessengerRecursivity = Convert.ToInt32(Console.ReadLine());
+
+                        if (MainModel.MessengerRecursivity <= 0)
+                            throw new Exception();
+                    }
+                    catch (Exception)
+                    {
+                        Console.ResetColor();
+
+                        Console.Write(GenerateTimestamp() + "Invalid recursivity parameter, please set it to at least 1 and only use digits ");
+                        Console.Write("[0-9]", Color.FromArgb(194, 53, 200));
+                        Console.WriteLine(".");
+                    }
+
+                    Console.ResetColor();
+                }
         }
 
         public void Login()
@@ -232,7 +267,7 @@ namespace Donquixote.Controller
             }
         }
 
-        public void StartAttack()
+        public void Attack()
         {
             Console.Write(GenerateTimestamp() + "Press any key to start the attack ...");
 
@@ -248,7 +283,7 @@ namespace Donquixote.Controller
 
             SetConsoleTitle();
 
-            Console.WriteLine($"\n{GenerateTimestamp()}Checking completed!");
+            Console.WriteLine($"\n{GenerateTimestamp()}Attack completed!");
             Console.Write($"{GenerateTimestamp()}Sent ");
             Console.Write(messengerResult.PhonesMessaged, Color.FromArgb(234, 153, 200));
             Console.Write($" messages to ");
