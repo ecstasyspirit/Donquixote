@@ -19,7 +19,7 @@ Donquixote is a minimal SMS sender working with Line2 API.
     + 00/00 | 00:00:00    Importing phone numbers from 'numbers.txt'... √
     ```
 
-2. Set Donquixote mode to either `Spam or Bomb`.
+2. Set Donquixote mode to either `Spam` or `Bomb`.
    Navigate the options using the `Up` & `Down`/`Left` & `Right` keys of your keyboard and press `Enter` to confirm your selection.
    
     ```diff
