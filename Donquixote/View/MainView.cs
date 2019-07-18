@@ -20,6 +20,8 @@ namespace Donquixote.View
 
         public void SetSession()
         {
+            MainController.SetConsoleSettings();
+
             MainController.SetConsoleTitle();
 
             MainController.DisplaySoftwareName();

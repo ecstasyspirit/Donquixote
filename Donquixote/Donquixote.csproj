@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\donquixote.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BetterHttpClient, Version=1.0.7.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BetterHttpClient.1.0.7.2\lib\net45\BetterHttpClient.dll</HintPath>
@@ -68,9 +71,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\donquixote-0.png" />
+    <Content Include="Images\donquixote.ico" />
+    <Content Include="Images\donquixote.png" />
     <Content Include="numbers.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

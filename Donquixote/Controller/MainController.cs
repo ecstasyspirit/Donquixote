@@ -11,6 +11,11 @@ namespace Donquixote.Controller
     {
         public MainModel MainModel = new MainModel();
 
+        public void SetConsoleSettings()
+        {
+            
+        }
+
         public void SetConsoleTitle() => MainModel.SetConsoleTitle();
 
         public void DisplaySoftwareName()
@@ -36,7 +41,7 @@ namespace Donquixote.Controller
 
         public void ImportPhones()
         {
-            Console.Write(MainModel.GenerateTimestamp() + "Importing phone numbers from 'numbers.txt' ...");
+            Console.Write(MainModel.GenerateTimestamp() + "Importing phone numbers from 'numbers.txt'...");
 
             switch (MainModel.ImportPhones())
             {
@@ -217,6 +222,7 @@ namespace Donquixote.Controller
         public void SetRecursivity()
         {
             if (MainModel.SelectedMode == ModeEnumModel.Bomb)
+            {
                 while (MainModel.MessengerRecursivity <= 0)
                 {
                     Console.Write(MainModel.GenerateTimestamp() + "Set the recursivity of the messenger to use for the attack: ");
@@ -241,13 +247,18 @@ namespace Donquixote.Controller
 
                     Console.ResetColor();
                 }
+
+                Console.Write(MainModel.GenerateTimestamp() + "Recursivity parameter set to [");
+                Console.Write($"{MainModel.MessengerRecursivity} times/phone number", Color.FromArgb(234, 153, 200));
+                Console.WriteLine("].");
+            }
         }
 
         public void Login()
         {
             Console.Write(MainModel.GenerateTimestamp() + "Enter Line2 phone number: ");
 
-            Console.ForegroundColor = Color.FromArgb(234, 153, 200);
+            Console.ForegroundColor = Color.Black;
 
             var phone = Console.ReadLine();
 
@@ -255,7 +266,7 @@ namespace Donquixote.Controller
 
             Console.Write(MainModel.GenerateTimestamp() + "Enter Line2 password: ");
 
-            Console.ForegroundColor = Color.FromArgb(234, 153, 200);
+            Console.ForegroundColor = Color.Black;
 
             var password = Console.ReadLine();
 
