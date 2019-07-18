@@ -11,11 +11,6 @@ namespace Donquixote.Controller
     {
         public MainModel MainModel = new MainModel();
 
-        public void SetConsoleSettings()
-        {
-            
-        }
-
         public void SetConsoleTitle() => MainModel.SetConsoleTitle();
 
         public void DisplaySoftwareName()
