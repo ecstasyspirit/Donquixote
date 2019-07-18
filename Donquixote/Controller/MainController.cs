@@ -1,12 +1,13 @@
 ﻿using Donquixote.Models;
-using Donquixote.Models.DataStructure.EnumModels;
+using Donquixote.Models.DataStructuresModels.EnumModels;
 using System;
 using System.Drawing;
+using System.IO;
 using Console = Colorful.Console;
 
 namespace Donquixote.Controller
 {
-    internal class MainController
+    public class MainController
     {
         public MainModel MainModel = new MainModel();
 
@@ -26,7 +27,7 @@ namespace Donquixote.Controller
 
             foreach (string text in array)
             {
-                Console.Write(new string(' ', Console.BufferWidth / 2 - text.Length / 2), Color.LightGray);
+                Console.Write(new string(' ', Console.BufferWidth / 2 - text.Length / 2));
                 Console.WriteLine(text, Color.FromArgb(num, num2, 200));
                 num -= 10;
                 num2 -= 25;
@@ -42,7 +43,7 @@ namespace Donquixote.Controller
             switch (MainModel.ImportPhones())
             {
                 case true:
-                    Console.WriteLine(" ✓", Color.LightGreen);
+                    Console.WriteLine(" ✓", Color.FromArgb(234, 153, 200));
                     break;
 
                 case false:
@@ -169,6 +170,63 @@ namespace Donquixote.Controller
             Console.ResetColor();
         }
 
+        public void SetMessage()
+        {
+            Console.Write(GenerateTimestamp() + "Enter the message to use for the attack: ");
+
+            Console.ForegroundColor = Color.FromArgb(234, 153, 200);
+
+            var inputBuffer = new byte[2048];
+            var inputStream = Console.OpenStandardInput(inputBuffer.Length);
+            Console.SetIn(new StreamReader(inputStream, Console.InputEncoding, false, inputBuffer.Length));
+
+            MainModel.PayloadMessage = Console.ReadLine();
+
+            Console.ResetColor();
+
+            Console.WriteLine(GenerateTimestamp() + "This is how the message will appear on the victims' devices:");
+            Console.WriteLine($"{new string(' ', 21)}>>");
+            Console.WriteLine(new string(' ', 21) + MainModel.PayloadMessage.Replace("\\n", "\n" + new string(' ', 21)), Color.FromArgb(234, 153, 200));
+            Console.WriteLine($"{new string(' ', 21)}<<");
+        }
+
+        public void Login()
+        {
+            Console.Write(GenerateTimestamp() + "Enter Line2 phone number: ");
+
+            Console.ForegroundColor = Color.FromArgb(234, 153, 200);
+
+            var phone = Console.ReadLine();
+
+            Console.ResetColor();
+
+            Console.Write(GenerateTimestamp() + "Enter Line2 password: ");
+
+            Console.ForegroundColor = Color.FromArgb(234, 153, 200);
+
+            var password = Console.ReadLine();
+
+            Console.ResetColor();
+
+            Console.Write(GenerateTimestamp() + "Connecting ...");
+
+            switch (MainModel.Login(phone, password))
+            {
+                case true:
+                    Console.WriteLine(" ✓", Color.FromArgb(234, 153, 200));
+                    break;
+
+                case false:
+                    Console.WriteLine(" X", Color.FromArgb(194, 53, 200));
+                    Console.WriteLine(GenerateTimestamp() + "Login failed.");
+
+                    Console.ReadKey(true);
+
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+
         public void StartAttack()
         {
             Console.Write(GenerateTimestamp() + "Press any key to start the attack ...");
@@ -187,13 +245,13 @@ namespace Donquixote.Controller
 
             Console.WriteLine($"\n{GenerateTimestamp()}Checking completed!");
             Console.Write($"{GenerateTimestamp()}Sent ");
-            Console.Write(checkerResult.PhonesMessaged, Color.LightGreen);
+            Console.Write(checkerResult.PhonesMessaged, Color.FromArgb(234, 153, 200));
             Console.Write($" messages to ");
-            Console.Write(checkerResult.PhonesLoaded, Color.LightGreen);
+            Console.Write(checkerResult.PhonesLoaded, Color.FromArgb(234, 153, 200));
             Console.Write("phones in ");
-            Console.Write(checkerResult.AttackMode, Color.LightGreen);
+            Console.Write(checkerResult.AttackMode, Color.FromArgb(234, 153, 200));
             Console.Write(" mode at ");
-            Console.Write(checkerResult.AttackSpeed, Color.LightGreen);
+            Console.Write(checkerResult.AttackSpeed, Color.FromArgb(234, 153, 200));
             Console.Write(" speed || (");
             Console.Write(checkerResult.PhoneSkiped, Color.FromArgb(194, 53, 200));
             Console.WriteLine(" skipped).");

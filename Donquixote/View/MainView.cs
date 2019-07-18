@@ -1,13 +1,9 @@
 ﻿using Donquixote.Controller;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Donquixote.View
 {
-    class MainView
+    public class MainView
     {
         public MainController MainController = new MainController();
 
@@ -28,11 +24,15 @@ namespace Donquixote.View
 
             MainController.DisplaySoftwareName();
 
-            //MainController.ImportPhones();
+            MainController.ImportPhones();
 
             MainController.SelectModeSpeed(1);
 
             MainController.SelectModeSpeed(2);
+
+            MainController.SetMessage();
+
+            MainController.Login();
         }
 
         //private void Attack() => MainController.Attack();

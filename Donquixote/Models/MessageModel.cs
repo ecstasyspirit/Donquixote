@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Donquixote.Models.DataStructures.DataModels
+namespace Donquixote.Models
 {
-    public class PhoneDataModel
+    class MessageModel
     {
-        public string Number { get; set; }
+
     }
 }

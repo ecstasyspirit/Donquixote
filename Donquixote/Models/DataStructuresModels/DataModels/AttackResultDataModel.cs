@@ -1,11 +1,6 @@
-﻿using Donquixote.Models.DataStructure.EnumModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Donquixote.Models.DataStructuresModels.EnumModels;
 
-namespace Donquixote.Models.DataStructures.DataModels
+namespace Donquixote.Models.DataStructuresModels.DataModels
 {
     public class AttackResultDataModel
     {

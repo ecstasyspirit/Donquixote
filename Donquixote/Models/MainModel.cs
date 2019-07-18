@@ -1,19 +1,20 @@
-﻿using Donquixote.Models.DataStructure.EnumModels;
-using Donquixote.Models.DataStructures.DataModels;
+﻿using Donquixote.Models.DataStructuresModels.EnumModels;
+using Donquixote.Models.DataStructuresModels.DataModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Donquixote.Models
 {
-    class MainModel
+    public class MainModel
     {
         #region Public variables
+        public string PayloadMessage = "";
+        public string AccessToken = "";
+
         public StatusEnumModel CurrentStatus = StatusEnumModel.Setup;
         public ModeEnumModel SelectedMode = ModeEnumModel.Spam;
         public SpeedEnumModel SelectedSpeed = SpeedEnumModel.Normal;
@@ -88,6 +89,13 @@ namespace Donquixote.Models
             }
             else
                 return false;
+        }
+
+        public bool Login(string phone, string password)
+        {
+            Thread.Sleep(5000);
+
+            return false;
         }
 
         public Task<AttackResultDataModel> SendMessages()

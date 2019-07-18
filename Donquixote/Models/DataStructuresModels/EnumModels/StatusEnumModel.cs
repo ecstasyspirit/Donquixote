@@ -1,4 +1,4 @@
-﻿namespace Donquixote.Models.DataStructure.EnumModels
+﻿namespace Donquixote.Models.DataStructuresModels.EnumModels
 {
     public enum StatusEnumModel
     {
