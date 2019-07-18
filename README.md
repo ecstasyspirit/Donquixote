@@ -1,2 +1,2 @@
 # Donquixote 🦩
-Donquixote is a minimal bulk SMS sender using Line2 API.
+Donquixote is a minimal SMS sender working with Line2 API.
