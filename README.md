@@ -7,7 +7,7 @@ Donquixote is a minimal SMS sender working with Line2 API.
 * Donquixote supports **special character, accents and emojis** within the message payload.
 
 <p align="center">
-  <img src="https://github.com/ecstasyspirit/Donquixote/blob/master/Donquixote/Images/donquixote-0.png" alt="Donquixote CLI" width="738">
+  <img src="https://github.com/ecstasyspirit/Donquixote/blob/master/Donquixote/Images/donquixote.png" alt="Donquixote CLI" width="738">
 </p>
 
 ## Usage 🤓
