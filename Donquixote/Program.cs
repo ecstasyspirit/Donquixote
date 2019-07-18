@@ -4,6 +4,6 @@ namespace Donquixote
 {
     public class Program
     {
-        static void Main() => new MainView();
+        private static void Main() => new MainView();
     }
 }

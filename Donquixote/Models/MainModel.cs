@@ -1,21 +1,20 @@
-﻿using Donquixote.Models.DataStructuresModels.EnumModels;
+﻿using BetterHttpClient;
+using Donquixote.Models.ConnectionsModels;
 using Donquixote.Models.DataStructuresModels.DataModels;
+using Donquixote.Models.DataStructuresModels.EnumModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Donquixote.Models.ConnectionsModels;
-using BetterHttpClient;
-using System.Net;
-using System.Drawing;
+using Console = Colorful.Console;
 
 namespace Donquixote.Models
 {
     public class MainModel
     {
-        #region Public variables
         public string MaliciousMessage = "";
         public string AccessToken = "";
 
@@ -37,7 +36,6 @@ namespace Donquixote.Models
 
         public LoginModel LoginModel = new LoginModel();
         public MessageModel MessageModel = new MessageModel();
-        #endregion
 
         public static string GenerateTimestamp() => $" {DateTime.Now.ToString("dd/MM | HH:mm:ss")}{new string(' ', 4)}";
 
@@ -59,6 +57,7 @@ namespace Donquixote.Models
                 case StatusEnumModel.Finished:
                     Console.Title = $"Donquixote :: {CurrentStatus}";
                     break;
+
                 case StatusEnumModel.Attacking:
                     Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhonesMessengerIndex} on {PhonesLoaded} | Failed to message {MessagingFailed.Count} | {CalculateProgress()}% done";
                     break;

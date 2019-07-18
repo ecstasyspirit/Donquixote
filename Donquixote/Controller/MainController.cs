@@ -3,7 +3,6 @@ using Donquixote.Models.DataStructuresModels.EnumModels;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
 using Console = Colorful.Console;
 
 namespace Donquixote.Controller
@@ -73,6 +72,7 @@ namespace Donquixote.Controller
                     Console.Write($"{MainModel.GenerateTimestamp()}What mode do you want to use? ");
                     Console.Write(availableModes[iOptionIndex], Color.FromArgb(234, 153, 200));
                     break;
+
                 case 1:
                     Console.Write($"{MainModel.GenerateTimestamp()}Available speeds: ");
                     Console.WriteLine(string.Join(", ", availableSpeeds), Color.FromArgb(234, 153, 200));
@@ -116,6 +116,7 @@ namespace Donquixote.Controller
                         case 0:
                             Console.Write(availableModes[iOptionIndex].ToString().Substring(availableModes[iOptionIndex].ToString().Length - 1, 1));
                             break;
+
                         case 1:
                             Console.Write(availableSpeeds[iOptionIndex].ToString().Substring(availableSpeeds[iOptionIndex].ToString().Length - 1, 1));
                             break;
@@ -139,6 +140,7 @@ namespace Donquixote.Controller
                                     else
                                         iOptionIndex++;
                                     break;
+
                                 case ConsoleKey.RightArrow:
                                 case ConsoleKey.UpArrow:
                                     if (iOptionIndex == 0)
@@ -152,6 +154,7 @@ namespace Donquixote.Controller
 
                             MainModel.SelectedMode = availableModes[iOptionIndex];
                             break;
+
                         case 1:
                             Console.Write(new string('\b', availableSpeeds[iOptionIndex].ToString().Length + 1)
                                           + new string(' ', availableSpeeds[iOptionIndex].ToString().Length + 1)
@@ -166,6 +169,7 @@ namespace Donquixote.Controller
                                     else
                                         iOptionIndex++;
                                     break;
+
                                 case ConsoleKey.LeftArrow:
                                 case ConsoleKey.UpArrow:
                                     if (iOptionIndex == 0)
