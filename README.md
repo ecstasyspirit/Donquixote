@@ -4,7 +4,7 @@ Donquixote is a minimal SMS sender working with Line2 API.
 * Donquixote sends **SMS** at various speeds to a **list of phone numbers** of your choosing.
 * Donquixote allows you to send a **single defined message** to a **range** of numbers.
 * Donquixote allows you to send a **ton of messages** to a **single or a range** of numbers.
-* Donquixote supports **special character, accents and emojis** within the message payload.
+* Donquixote supports **special characters, accents and emojis** within the message payload.
 
 <p align="center">
   <img src="https://github.com/ecstasyspirit/Donquixote/blob/master/Donquixote/Images/donquixote.png" alt="Donquixote CLI" width="738">
