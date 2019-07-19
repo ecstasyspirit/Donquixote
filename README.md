@@ -32,8 +32,38 @@ Donquixote is a minimal SMS sender working with Line2 API.
     ```diff
     + 00/00 | 00:00:00    Importing phone numbers from 'numbers.txt'... √
     ```
+    
+2. Set Donquixote connection to either `Direct` or `Proxy`.
+   Selecting `Direct` is perfect for sending the SMS at a `Normal` or `Medium` speed.
+   Selecting `Proxy` will allow you to safely choose the `Fast` or `Risky` speed without getting **IP banned**.
 
-2. Set Donquixote mode to either `Spam` or `Bomb`.
+    ```diff
+     00/00 | 00:00:00    Available connections: Direct, Proxy
+     00/00 | 00:00:00    What connection do you want to use? Proxy
+    + 00/00 | 00:00:00    Selected connection [Proxy].
+    ```
+    
+    You must leave a text file named `proxies.txt` in the startup directory.
+    The proxies must follow a precise format and must be entrered one at a time on different lines.
+    The is proxy type is automatically detected and allows you to use mixed-type lists.
+    
+    ```diff
+    - This is bad formatting:
+    - 127.0.0.1 8888
+    - 127.0.0.1, 8888
+    - 127.0.0.1|8888
+    
+    + This is good formatting:
+    + 127.0.0.1:8888
+    + 127.0.0.1:8888
+    + 127.0.0.1:8888
+    ```
+    
+    ```diff
+    + 00/00 | 00:00:00    Importing proxies from 'proxies.txt'... √
+    ```
+
+3. Set Donquixote mode to either `Spam` or `Bomb`.
    Navigate the options using the `Up` & `Down`/`Left` & `Right` keys of your keyboard and press `Enter` to confirm your selection.
    
     ```diff
@@ -42,7 +72,7 @@ Donquixote is a minimal SMS sender working with Line2 API.
     + 00/00 | 00:00:00    Selected mode [Spam].
     ```
     
-3. Set Donquixote speed to either `Risky`, `Fast`, `Medium` or `Normal`. 
+4. Set Donquixote speed to either `Risky`, `Fast`, `Medium` or `Normal`. 
    Do not go above select `Fast` or `Risky` without proxies as your **IP will be banned after 175 SMS**.
    `Medium` is the recommended speed to use in order to avoid either:
 
@@ -58,7 +88,7 @@ Donquixote is a minimal SMS sender working with Line2 API.
     + 00/00 | 00:00:00    Selected speed [Fast] || pause between messages [500 ms].
     ```
     
-4. Set the message payload to whatever message you want.
+5. Set the message payload to whatever message you want.
    Press `Enter` to confirm your input. Donquixote will display a preview of what your message payload will look like on the victims' devices.
    
     ```diff
@@ -71,20 +101,20 @@ Donquixote is a minimal SMS sender working with Line2 API.
     +                 <<
     ```
     
-    5. If you set Donquixote mode to `Bomb`, you will also need to set the messenger recursivity.
-    This is the amount of time your message will be sent to each phone numbers of your list.
-    Press `Enter` to confirm your input.
+6. If you set Donquixote mode to `Bomb`, you will also need to set the messenger recursivity.
+   This is the amount of time your message will be sent to each phone numbers of your list.
+   Press `Enter` to confirm your input.
    
     ```diff
      00/00 | 00:00:00    Set the recursivity of the messenger to use for the attack: 50
     + 00/00 | 00:00:00    Recursivity parameter set to [50 times/phone number].
     ```
     
-     6. Set the phone number and password of your Line2 account.
-     Donquixote will use this information to sign in your account to fetch your access token.
-     This is a necessary step in order to use Donquixote.
-     This will not work if your account doesn't have an active subscription to Line2 service.
-     You will not see what you are typing but the console caret will move, that shows your information is correctly being recorded.
+7. Set the phone number and password of your Line2 account.
+   Donquixote will use this information to sign in your account to fetch your access token.
+   This is a necessary step in order to use Donquixote.
+   This will not work if your account doesn't have an active subscription to Line2 service.
+   You will not see what you are typing but the console caret will move, that shows your information is correctly being recorded.
    
     ```diff
      00/00 | 00:00:00    Enter Line2 phone number:
@@ -93,9 +123,9 @@ Donquixote is a minimal SMS sender working with Line2 API.
     + 00/00 | 00:00:00    Fetched access token: xxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
     ```
     
-    7. Donquixote is ready to work. Simply press a key to debute.
+8. Donquixote is ready to work. Simply press a key to debute.
     
-     ```diff
+    ```diff
     + 00/00 | 00:00:00    Press any key to start the attack ...
     ```
     
