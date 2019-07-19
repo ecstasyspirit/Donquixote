@@ -43,7 +43,7 @@ Donquixote is a minimal SMS sender working with Line2 API.
     ```
     
 3. Set Donquixote speed to either `Risky`, `Fast`, `Medium` or `Normal`.
-   Do not go above select `Fast` or `Risky` without proxies as your IP will be banned after 175 SMS.
+   Do not go above select `Fast` or `Risky` without proxies as your **IP will be banned after 175 SMS**.
    `Medium` is the recommended speed to use in order to avoid either:
 
    * Getting your **account banned**
