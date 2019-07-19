@@ -124,7 +124,6 @@ namespace Donquixote.Models
                             line = streamReader.ReadLine();
                         else
                         {
-
                             Proxies.Add(line);
 
                             line = streamReader.ReadLine();
