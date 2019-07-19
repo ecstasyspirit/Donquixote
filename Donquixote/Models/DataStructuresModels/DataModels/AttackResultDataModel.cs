@@ -4,11 +4,11 @@ namespace Donquixote.Models.DataStructuresModels.DataModels
 {
     public class AttackResultDataModel
     {
-        public ModeEnumModel AttackMode { get; set; }
-        public SpeedEnumModel AttackSpeed { get; set; }
+        public ModeEnumModel AttackMode { get; set; } = ModeEnumModel.Bomb;
+        public SpeedEnumModel AttackSpeed { get; set; } = SpeedEnumModel.Normal;
 
-        public int PhonesLoaded { get; set; }
-        public int PhonesMessaged { get; set; }
-        public int PhoneSkiped { get; set; }
+        public int PhonesLoaded { get; set; } = 0;
+        public int PhonesMessaged { get; set; } = 0;
+        public int PhoneSkiped { get; set; } = 0;
     }
 }

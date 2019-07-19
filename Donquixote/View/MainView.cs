@@ -26,9 +26,11 @@ namespace Donquixote.View
 
             MainController.ImportPhones();
 
-            MainController.SelectModeSpeed(0);
+            MainController.SelectConnectionModeSpeed(0);
 
-            MainController.SelectModeSpeed(1);
+            MainController.SelectConnectionModeSpeed(1);
+
+            MainController.SelectConnectionModeSpeed(2);
 
             MainController.SetMessage();
 

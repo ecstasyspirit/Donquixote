@@ -46,38 +46,44 @@ namespace Donquixote.Controller
 
                 case false:
                     Console.WriteLine(" X", Color.FromArgb(194, 53, 200));
-                    Console.WriteLine(MainModel.GenerateTimestamp() + "No 'numbers.txt' file found in the startup directory.");
+                    Console.Write($"{MainModel.GenerateTimestamp()}No 'numbers.txt' file found in the startup directory.\n{MainModel.GenerateTimestamp()}Press any key to exit...");
 
                     Console.ReadKey(true);
 
                     Environment.Exit(0);
                     break;
             }
-
-            MainModel.SetConsoleTitle();
         }
 
-        public void SelectModeSpeed(int mode)
+        public void SelectConnectionModeSpeed(int mode)
         {
-            var iOptionIndex = 0;
+            var optionIndex = 0;
 
+            var availableConnections = (ConnectionEnumModel[])Enum.GetValues(typeof(ConnectionEnumModel));
             var availableModes = (ModeEnumModel[])Enum.GetValues(typeof(ModeEnumModel));
             var availableSpeeds = (SpeedEnumModel[])Enum.GetValues(typeof(SpeedEnumModel));
 
             switch (mode)
             {
                 case 0:
-                    Console.Write($"{MainModel.GenerateTimestamp()}Available modes: ");
-                    Console.WriteLine(string.Join(", ", availableModes), Color.FromArgb(234, 153, 200));
-                    Console.Write($"{MainModel.GenerateTimestamp()}What mode do you want to use? ");
-                    Console.Write(availableModes[iOptionIndex], Color.FromArgb(234, 153, 200));
+                    Console.Write($"{MainModel.GenerateTimestamp()}Available connections: ");
+                    Console.WriteLine(string.Join(", ", availableConnections), Color.FromArgb(234, 153, 200));
+                    Console.Write($"{MainModel.GenerateTimestamp()}What connection do you want to use? ");
+                    Console.Write(availableConnections[optionIndex], Color.FromArgb(234, 153, 200));
                     break;
 
                 case 1:
+                    Console.Write($"{MainModel.GenerateTimestamp()}Available modes: ");
+                    Console.WriteLine(string.Join(", ", availableModes), Color.FromArgb(234, 153, 200));
+                    Console.Write($"{MainModel.GenerateTimestamp()}What mode do you want to use? ");
+                    Console.Write(availableModes[optionIndex], Color.FromArgb(234, 153, 200));
+                    break;
+
+                case 2:
                     Console.Write($"{MainModel.GenerateTimestamp()}Available speeds: ");
                     Console.WriteLine(string.Join(", ", availableSpeeds), Color.FromArgb(234, 153, 200));
                     Console.Write($"{MainModel.GenerateTimestamp()}What speed do you want to use? ");
-                    Console.Write(availableSpeeds[iOptionIndex], Color.FromArgb(234, 153, 200));
+                    Console.Write(availableSpeeds[optionIndex], Color.FromArgb(234, 153, 200));
                     break;
             }
 
@@ -94,12 +100,21 @@ namespace Donquixote.Controller
                     switch (mode)
                     {
                         case 0:
+                            Console.Write($"\n{MainModel.GenerateTimestamp()}Selected connection [");
+                            Console.Write($"{MainModel.SelectedConnection}", Color.FromArgb(234, 153, 200));
+                            Console.WriteLine($"].");
+
+                            if (MainModel.SelectedConnection == ConnectionEnumModel.Proxy)
+                                ImportProxies();
+                            break;
+
+                        case 1:
                             Console.Write($"\n{MainModel.GenerateTimestamp()}Selected mode [");
                             Console.Write($"{MainModel.SelectedMode}", Color.FromArgb(234, 153, 200));
                             Console.WriteLine($"].");
                             break;
 
-                        case 1:
+                        case 2:
                             Console.Write($"\n{MainModel.GenerateTimestamp()}Selected speed [");
                             Console.Write($"{MainModel.SelectedSpeed}", Color.FromArgb(234, 153, 200));
                             Console.Write($"] || pause between messages [");
@@ -114,11 +129,15 @@ namespace Donquixote.Controller
                     switch (mode)
                     {
                         case 0:
-                            Console.Write(availableModes[iOptionIndex].ToString().Substring(availableModes[iOptionIndex].ToString().Length - 1, 1));
+                            Console.Write(availableConnections[optionIndex].ToString().Substring(availableConnections[optionIndex].ToString().Length - 1, 1));
                             break;
 
                         case 1:
-                            Console.Write(availableSpeeds[iOptionIndex].ToString().Substring(availableSpeeds[iOptionIndex].ToString().Length - 1, 1));
+                            Console.Write(availableModes[optionIndex].ToString().Substring(availableModes[optionIndex].ToString().Length - 1, 1));
+                            break;
+
+                        case 2:
+                            Console.Write(availableSpeeds[optionIndex].ToString().Substring(availableSpeeds[optionIndex].ToString().Length - 1, 1));
                             break;
                     }
                 }
@@ -127,64 +146,114 @@ namespace Donquixote.Controller
                     switch (mode)
                     {
                         case 0:
-                            Console.Write(new string('\b', availableModes[iOptionIndex].ToString().Length + 1)
-                                          + new string(' ', availableModes[iOptionIndex].ToString().Length + 1)
-                                          + new string('\b', availableModes[iOptionIndex].ToString().Length + 1));
+                            Console.Write(new string('\b', availableConnections[optionIndex].ToString().Length + 1)
+                                          + new string(' ', availableConnections[optionIndex].ToString().Length + 1)
+                                          + new string('\b', availableConnections[optionIndex].ToString().Length + 1));
 
                             switch (oKeyDown)
                             {
                                 case ConsoleKey.LeftArrow:
                                 case ConsoleKey.DownArrow:
-                                    if (iOptionIndex == availableModes.Length - 1)
-                                        iOptionIndex = 0;
+                                    if (optionIndex == availableConnections.Length - 1)
+                                        optionIndex = 0;
                                     else
-                                        iOptionIndex++;
+                                        optionIndex++;
                                     break;
 
                                 case ConsoleKey.RightArrow:
                                 case ConsoleKey.UpArrow:
-                                    if (iOptionIndex == 0)
-                                        iOptionIndex = availableModes.Length - 1;
+                                    if (optionIndex == 0)
+                                        optionIndex = availableConnections.Length - 1;
                                     else
-                                        iOptionIndex--;
+                                        optionIndex--;
                                     break;
                             }
 
-                            Console.Write(availableModes[iOptionIndex].ToString());
+                            Console.Write(availableConnections[optionIndex].ToString());
 
-                            MainModel.SelectedMode = availableModes[iOptionIndex];
+                            MainModel.SelectedConnection = availableConnections[optionIndex];
                             break;
 
                         case 1:
-                            Console.Write(new string('\b', availableSpeeds[iOptionIndex].ToString().Length + 1)
-                                          + new string(' ', availableSpeeds[iOptionIndex].ToString().Length + 1)
-                                          + new string('\b', availableSpeeds[iOptionIndex].ToString().Length + 1));
+                            Console.Write(new string('\b', availableModes[optionIndex].ToString().Length + 1)
+                                          + new string(' ', availableModes[optionIndex].ToString().Length + 1)
+                                          + new string('\b', availableModes[optionIndex].ToString().Length + 1));
+
+                            switch (oKeyDown)
+                            {
+                                case ConsoleKey.LeftArrow:
+                                case ConsoleKey.DownArrow:
+                                    if (optionIndex == availableModes.Length - 1)
+                                        optionIndex = 0;
+                                    else
+                                        optionIndex++;
+                                    break;
+
+                                case ConsoleKey.RightArrow:
+                                case ConsoleKey.UpArrow:
+                                    if (optionIndex == 0)
+                                        optionIndex = availableModes.Length - 1;
+                                    else
+                                        optionIndex--;
+                                    break;
+                            }
+
+                            Console.Write(availableModes[optionIndex].ToString());
+
+                            MainModel.SelectedMode = availableModes[optionIndex];
+                            break;
+
+                        case 2:
+                            Console.Write(new string('\b', availableSpeeds[optionIndex].ToString().Length + 1)
+                                          + new string(' ', availableSpeeds[optionIndex].ToString().Length + 1)
+                                          + new string('\b', availableSpeeds[optionIndex].ToString().Length + 1));
 
                             switch (oKeyDown)
                             {
                                 case ConsoleKey.RightArrow:
                                 case ConsoleKey.DownArrow:
-                                    if (iOptionIndex == availableSpeeds.Length - 1)
-                                        iOptionIndex = 0;
+                                    if (optionIndex == availableSpeeds.Length - 1)
+                                        optionIndex = 0;
                                     else
-                                        iOptionIndex++;
+                                        optionIndex++;
                                     break;
 
                                 case ConsoleKey.LeftArrow:
                                 case ConsoleKey.UpArrow:
-                                    if (iOptionIndex == 0)
-                                        iOptionIndex = availableSpeeds.Length - 1;
+                                    if (optionIndex == 0)
+                                        optionIndex = availableSpeeds.Length - 1;
                                     else
-                                        iOptionIndex--;
+                                        optionIndex--;
                                     break;
                             }
 
-                            Console.Write(availableSpeeds[iOptionIndex].ToString());
+                            Console.Write(availableSpeeds[optionIndex].ToString());
 
-                            MainModel.SelectedSpeed = availableSpeeds[iOptionIndex];
+                            MainModel.SelectedSpeed = availableSpeeds[optionIndex];
                             break;
                     }
                 }
+            }
+        }
+
+        public void ImportProxies()
+        {
+            Console.Write(MainModel.GenerateTimestamp() + "Importing proxies from 'proxies.txt'...");
+
+            switch (MainModel.ImportProxies())
+            {
+                case true:
+                    Console.WriteLine(" ✓", Color.FromArgb(234, 153, 200));
+                    break;
+
+                case false:
+                    Console.WriteLine(" X", Color.FromArgb(194, 53, 200));
+                    Console.Write($"{MainModel.GenerateTimestamp()}No 'proxies.txt' file found in the startup directory.\n{MainModel.GenerateTimestamp()}Press any key to exit...");
+
+                    Console.ReadKey(true);
+
+                    Environment.Exit(0);
+                    break;
             }
         }
 

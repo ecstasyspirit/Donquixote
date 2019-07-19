@@ -56,6 +56,7 @@
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Models\DataStructuresModels\DataModels\AttackResultDataModel.cs" />
     <Compile Include="Models\DataStructuresModels\DataModels\PhoneDataModel.cs" />
+    <Compile Include="Models\DataStructuresModels\EnumModels\ConnectionEnumModel.cs" />
     <Compile Include="Models\DataStructuresModels\EnumModels\SpeedEnumModel.cs" />
     <Compile Include="Models\DataStructuresModels\EnumModels\StatusEnumModel.cs" />
     <Compile Include="Models\DataStructuresModels\EnumModels\ModeEnumModel.cs" />

