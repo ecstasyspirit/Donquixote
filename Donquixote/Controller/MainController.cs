@@ -352,7 +352,7 @@ namespace Donquixote.Controller
             }
 
             Console.Write(MainModel.GenerateTimestamp() + "Thread parameter set to [");
-            Console.Write($"{MainModel.WorkerThreads} times/phone number", Color.FromArgb(234, 153, 200));
+            Console.Write(MainModel.WorkerThreads, Color.FromArgb(234, 153, 200));
             Console.WriteLine("].");
         }
 
