@@ -14,6 +14,20 @@ Donquixote is a minimal SMS sender working with Line2 API.
 
 1. You must leave a text file named `numbers.txt` in the startup directory.
    Currently Donquixote only supports messaging Canada and U.S.A numbers.
+   The numbers must follow a precise format and must be entrered one at a time on different lines.
+   The international code by is added automaticlly and by default is `+1`. This cannot be changed.
+   
+    ```diff
+    - This is bad formatting:
+    - 5144-201-337
+    - 514 420 1337
+    - 15144201337
+    
+    + This is formatting:
+    + 5144201337
+    + 4389476251
+    + 4502800371
+    ```
    
     ```diff
     + 00/00 | 00:00:00    Importing phone numbers from 'numbers.txt'... √
