@@ -36,6 +36,8 @@ namespace Donquixote.View
 
             MainController.SetRecursivity();
 
+            MainController.SetThreads();
+
             MainController.Login();
         }
 

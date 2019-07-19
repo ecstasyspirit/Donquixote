@@ -154,7 +154,7 @@ namespace Donquixote.Controller
                             {
                                 case ConsoleKey.LeftArrow:
                                 case ConsoleKey.DownArrow:
-                                    if (optionIndex == availableConnections.Length - 1)
+                                    if (optionIndex == availableModes.Length - 1)
                                         optionIndex = 0;
                                     else
                                         optionIndex++;
@@ -210,15 +210,15 @@ namespace Donquixote.Controller
 
                             switch (oKeyDown)
                             {
-                                case ConsoleKey.RightArrow:
+                                case ConsoleKey.LeftArrow:
                                 case ConsoleKey.DownArrow:
-                                    if (optionIndex == availableSpeeds.Length - 1)
+                                    if (optionIndex == availableModes.Length - 1)
                                         optionIndex = 0;
                                     else
                                         optionIndex++;
                                     break;
 
-                                case ConsoleKey.LeftArrow:
+                                case ConsoleKey.RightArrow:
                                 case ConsoleKey.UpArrow:
                                     if (optionIndex == 0)
                                         optionIndex = availableSpeeds.Length - 1;
@@ -304,7 +304,7 @@ namespace Donquixote.Controller
                     {
                         Console.ResetColor();
 
-                        Console.Write(MainModel.GenerateTimestamp() + "Invalid recursivity parameter, please set it to at least 1 and only use digits ");
+                        Console.Write(MainModel.GenerateTimestamp() + "Invalid recursivity parameter, please set it to at least 1 and only use digits.");
                         Console.Write("[0-9]", Color.FromArgb(194, 53, 200));
                         Console.WriteLine(".");
                     }
@@ -316,6 +316,44 @@ namespace Donquixote.Controller
                 Console.Write($"{MainModel.MessengerRecursivity} times/phone number", Color.FromArgb(234, 153, 200));
                 Console.WriteLine("].");
             }
+        }
+
+        public void SetThreads()
+        {
+            while (MainModel.WorkerThreads <= 0)
+            {
+                Console.Write(
+                    $"{MainModel.GenerateTimestamp()}Recommended for connections: 'Direct' -> 1 - 2 ||" +
+                    " 'Proxy' [free] -> 150 - 200 & [paid] -> 2 - 5\n" +
+                    $"{MainModel.GenerateTimestamp()}Set the threads count to use for the attack: ");
+
+                Console.ForegroundColor = Color.FromArgb(234, 153, 200);
+
+                try
+                {
+                    MainModel.WorkerThreads = Convert.ToInt32(Console.ReadLine());
+
+                    if (MainModel.WorkerThreads <= 0)
+                        throw new Exception();
+                }
+                catch (Exception)
+                {
+                    Console.ResetColor();
+
+                    Console.Write(MainModel.GenerateTimestamp() + "Invalid threads parameter, please set it to at least 1 and only use digits ");
+                    Console.Write("[0-9]", Color.FromArgb(194, 53, 200));
+                    Console.WriteLine(".");
+                }
+
+                Console.ResetColor();
+
+                if (MainModel.MaliciousMessage.Replace(" ", string.Empty).Length == 0)
+                    Console.WriteLine(MainModel.GenerateTimestamp() + "Invalid message parameter, please set it to at least 1 character.");
+            }
+
+            Console.Write(MainModel.GenerateTimestamp() + "Thread parameter set to [");
+            Console.Write($"{MainModel.WorkerThreads} times/phone number", Color.FromArgb(234, 153, 200));
+            Console.WriteLine("].");
         }
 
         public void Login()
