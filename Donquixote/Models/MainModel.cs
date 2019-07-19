@@ -52,7 +52,7 @@ namespace Donquixote.Models
             var progressRate = 0f;
 
             if (PhoneNumbersMessengerIndex > progressRate)
-                progressRate = PhoneNumbersMessengerIndex * 100 / PhoneNumbersLoaded;
+                progressRate = PhoneNumbersMessengerIndex * 100 / (PhoneNumbersLoaded + ReEnqueuedPhoneNumbers);
 
             return progressRate;
         }
@@ -67,7 +67,7 @@ namespace Donquixote.Models
                     break;
 
                 case StatusEnumModel.Attacking:
-                    Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhoneNumbersMessengerIndex} on {PhoneNumbersLoaded} + {ReEnqueuedPhoneNumbers} retries | Failed to message {MessagingFailed.Count} | {CalculateProgress()}% done";
+                    Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhoneNumbersMessengerIndex} on {PhoneNumbersLoaded + ReEnqueuedPhoneNumbers} ({PhoneNumbersLoaded} imported + {ReEnqueuedPhoneNumbers} retries | Failed to message {MessagingFailed.Count} | {CalculateProgress()}% done";
                     break;
             }
         }
@@ -209,7 +209,7 @@ namespace Donquixote.Models
                 AcceptEncoding = "br, gzip, deflate",
                 AcceptLanguage = "en;q=1",
                 Timeout = TimeSpan.FromSeconds(6),
-                NumberOfAttempts = MaxAttempts                
+                NumberOfAttempts = 2                
             };
 
             if (SelectedConnection == ConnectionEnumModel.Proxy)
@@ -274,8 +274,6 @@ namespace Donquixote.Models
                                     break;
 
                                 case 1:
-                                    DisplayStatus(1, phone.Number, failureSpaceCount);
-
                                     if (phone.NumberOfAttempts < MaxAttempts)
                                     {
                                         phone.NumberOfAttempts++;
@@ -285,7 +283,11 @@ namespace Donquixote.Models
                                         ReEnqueuedPhoneNumbers++;
                                     }
                                     else
+                                    {
                                         MessagingFailed.Add(phone);
+
+                                        DisplayStatus(1, phone.Number, failureSpaceCount);
+                                    }
                                     break;
                             }
 

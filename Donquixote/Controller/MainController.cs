@@ -388,7 +388,9 @@ namespace Donquixote.Controller
 
                 default:
                     Console.WriteLine(" ✓", Color.FromArgb(234, 153, 200));
-                    Console.WriteLine($"{MainModel.GenerateTimestamp()}Fetched access token: {login}.");
+                    Console.Write($"{MainModel.GenerateTimestamp()}Fetched access token: [");
+                    Console.Write(login, Color.FromArgb(234, 153, 200));
+                    Console.WriteLine("].");
 
                     MainModel.AccessToken = login;
                     break;
