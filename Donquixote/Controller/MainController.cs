@@ -322,10 +322,7 @@ namespace Donquixote.Controller
         {
             while (MainModel.WorkerThreads <= 0)
             {
-                Console.Write(
-                    $"{MainModel.GenerateTimestamp()}Recommended for connections: 'Direct' -> 1 - 2 ||" +
-                    " 'Proxy' [free] -> 150 - 200 & [paid] -> 2 - 5\n" +
-                    $"{MainModel.GenerateTimestamp()}Set the threads count to use for the attack: ");
+                Console.Write(MainModel.GenerateTimestamp() + "Set the threads count to use for the attack: ");
 
                 Console.ForegroundColor = Color.FromArgb(234, 153, 200);
 

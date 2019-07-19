@@ -209,9 +209,11 @@ namespace Donquixote.Models
                 AcceptEncoding = "br, gzip, deflate",
                 AcceptLanguage = "en;q=1",
                 Timeout = TimeSpan.FromSeconds(6),
-                NumberOfAttempts = MaxAttempts,
-                Proxy = new Proxy(Proxies[RandomProxySelector.Next(0, Proxies.Count - 1)])
+                NumberOfAttempts = MaxAttempts                
             };
+
+            if (SelectedConnection == ConnectionEnumModel.Proxy)
+                client.Proxy = new Proxy(Proxies[RandomProxySelector.Next(0, Proxies.Count - 1)]);
 
             var successSpaceCount = Console.BufferWidth - 56;
             var failureSpaceCount = Console.BufferWidth - 52;
