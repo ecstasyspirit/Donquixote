@@ -110,7 +110,17 @@ Donquixote is a minimal SMS sender working with Line2 API.
     + 00/00 | 00:00:00    Recursivity parameter set to [50 times/phone number].
     ```
     
-7. Set the phone number and password of your Line2 account.
+7. If you set Donquixote connection to `Proxy`, it is a crucial step to set the messenger recursivity.
+   This is the amount of parallel requests that Donquixote will send out.
+   If requests timeout, the default number of attempts that will be made for each phone number is 6.
+   Press `Enter` to confirm your input.
+   
+    ```diff
+     00/00 | 00:00:00    Set the recursivity of the messenger to use for the attack: 50
+    + 00/00 | 00:00:00    Recursivity parameter set to [50 times/phone number].
+    ```
+    
+8. Set the phone number and password of your Line2 account.
    Donquixote will use this information to sign in your account to fetch your access token.
    This is a necessary step in order to use Donquixote.
    This will not work if your account doesn't have an active subscription to Line2 service.
@@ -123,7 +133,7 @@ Donquixote is a minimal SMS sender working with Line2 API.
     + 00/00 | 00:00:00    Fetched access token: xxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
     ```
     
-8. Donquixote is ready to work. Simply press a key to debute.
+9. Donquixote is ready to work. Simply press a key to debute.
     
     ```diff
     + 00/00 | 00:00:00    Press any key to start the attack ...
