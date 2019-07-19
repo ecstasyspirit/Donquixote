@@ -304,7 +304,7 @@ namespace Donquixote.Controller
                     {
                         Console.ResetColor();
 
-                        Console.Write(MainModel.GenerateTimestamp() + "Invalid recursivity parameter, please set it to at least 1 and only use digits.");
+                        Console.Write(MainModel.GenerateTimestamp() + "Invalid recursivity parameter, please set it to at least 1 and only use digits ");
                         Console.Write("[0-9]", Color.FromArgb(194, 53, 200));
                         Console.WriteLine(".");
                     }
