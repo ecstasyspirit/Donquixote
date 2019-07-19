@@ -34,8 +34,8 @@ Donquixote is a minimal SMS sender working with Line2 API.
     ```
     
 2. Set Donquixote connection to either `Direct` or `Proxy`.
-   Selecting `Direct` is perfect for sending the SMS at a `Normal` or `Medium` speed.
-   Selecting `Proxy` will allow you to safely choose the `Fast` or `Risky` speed without getting **IP banned**.
+   Selecting `Direct` is perfect for sending the SMS at a `Normal` or `Medium` speed, the task will run on a single thread.
+   Selecting `Proxy` will allow you to safely choose the `Fast` or `Risky` speed without getting **IP banned**, the tasks will run on 150 threads.
 
     ```diff
      00/00 | 00:00:00    Available connections: Direct, Proxy
