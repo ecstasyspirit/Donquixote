@@ -4,22 +4,36 @@ Donquixote is a minimal SMS sender working with Line2 API.
 * Donquixote sends **SMS** at various speeds to a **list of phone numbers** of your choosing.
 * Donquixote allows you to send a **single defined message** to a **range** of numbers.
 * Donquixote allows you to send a **ton of messages** to a **single or a range** of numbers.
-* Donquixote supports **special character, accents and emojis** within the message payload.
+* Donquixote supports **special characters, accents and emojis** within the message payload.
 
 <p align="center">
-  <img src="https://github.com/ecstasyspirit/Donquixote/blob/master/Donquixote/Images/donquixote-0.png" alt="Donquixote CLI" width="738">
+  <img src="https://github.com/ecstasyspirit/Donquixote/blob/master/Donquixote/Images/donquixote.png" alt="Donquixote CLI" width="738">
 </p>
 
 ## Usage 🤓
 
 1. You must leave a text file named `numbers.txt` in the startup directory.
    Currently Donquixote only supports messaging Canada and U.S.A numbers.
+   The numbers must follow a precise format and must be entrered one at a time on different lines.
+   The international code by is added automaticlly and by default is `+1`. This cannot be changed.
+   
+    ```diff
+    - This is bad formatting:
+    - 5144-201-337
+    - 514 420 1337
+    - 15144201337
+    
+    + This is good formatting:
+    + 5144201337
+    + 4389476251
+    + 4502800371
+    ```
    
     ```diff
     + 00/00 | 00:00:00    Importing phone numbers from 'numbers.txt'... √
     ```
 
-2. Set Donquixote mode to either `Spam or Bomb`.
+2. Set Donquixote mode to either `Spam` or `Bomb`.
    Navigate the options using the `Up` & `Down`/`Left` & `Right` keys of your keyboard and press `Enter` to confirm your selection.
    
     ```diff
@@ -28,8 +42,9 @@ Donquixote is a minimal SMS sender working with Line2 API.
     + 00/00 | 00:00:00    Selected mode [Spam].
     ```
     
-3. Set Donquixote speed to either `Risky`, `Fast`, `Medium` or `Normal`.
-   The recommended speed to use in order to avoid either:
+3. Set Donquixote speed to either `Risky`, `Fast`, `Medium` or `Normal`. 
+   Do not go above select `Fast` or `Risky` without proxies as your **IP will be banned after 175 SMS**.
+   `Medium` is the recommended speed to use in order to avoid either:
 
    * Getting your **account banned**
    * Getting your **IP banned**
