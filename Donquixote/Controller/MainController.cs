@@ -154,7 +154,7 @@ namespace Donquixote.Controller
                             {
                                 case ConsoleKey.LeftArrow:
                                 case ConsoleKey.DownArrow:
-                                    if (optionIndex == availableModes.Length - 1)
+                                    if (optionIndex == availableConnections.Length - 1)
                                         optionIndex = 0;
                                     else
                                         optionIndex++;
@@ -212,7 +212,7 @@ namespace Donquixote.Controller
                             {
                                 case ConsoleKey.LeftArrow:
                                 case ConsoleKey.DownArrow:
-                                    if (optionIndex == availableModes.Length - 1)
+                                    if (optionIndex == availableSpeeds.Length - 1)
                                         optionIndex = 0;
                                     else
                                         optionIndex++;
