@@ -116,8 +116,8 @@ Donquixote is a minimal SMS sender working with Line2 API.
    Press `Enter` to confirm your input.
    
     ```diff
-     00/00 | 00:00:00    Set the recursivity of the messenger to use for the attack: 50
-    + 00/00 | 00:00:00    Recursivity parameter set to [50 times/phone number].
+     00/00 | 00:00:00    Recommended for connections: 'Direct' -> 1 - 2 || 'Proxy' [free] -> 150 - 200 & [paid] -> 2 - 5
+    + 00/00 | 00:00:00    Thread parameter set to [1 times/phone number]
     ```
     
 8. Set the phone number and password of your Line2 account.
