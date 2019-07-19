@@ -23,7 +23,7 @@ Donquixote is a minimal SMS sender working with Line2 API.
     - 514 420 1337
     - 15144201337
     
-    + This is formatting:
+    + This is good formatting:
     + 5144201337
     + 4389476251
     + 4502800371
