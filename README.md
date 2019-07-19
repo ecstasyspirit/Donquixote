@@ -113,11 +113,19 @@ Donquixote is a minimal SMS sender working with Line2 API.
 7. If you set Donquixote connection to `Proxy`, it is a crucial step to set the messenger recursivity.
    This is the amount of parallel requests that Donquixote will send out.
    If requests timeout, the default number of attempts that will be made for each phone number is 6.
+   The amount of threads to use depends on the connection you chose earlier and the quality of your proxies.
+   Below are recommended settings. They should just be taken as reference, increase or reduce the thread amount accordingly to your experience when messaging.
+   These should work in most cases:
+
+   * `Direct`: **1 to 2**.
+   * `Proxy`: **150 to 250** if your proxies are free (scraped from the internet)
+   * `Proxy`: **2 to 5** if your proxies are paid (private use proxies)
+
    Press `Enter` to confirm your input.
    
     ```diff
-     00/00 | 00:00:00    Recommended for connections: 'Direct' -> 1 - 2 || 'Proxy' [free] -> 150 - 200 & [paid] -> 2 - 5
-    + 00/00 | 00:00:00    Thread parameter set to [1 times/phone number]
+     00/00 | 00:00:00    Set the threads count to use for the attack: 150
+    + 00/00 | 00:00:00    Thread parameter set to [150].
     ```
     
 8. Set the phone number and password of your Line2 account.
