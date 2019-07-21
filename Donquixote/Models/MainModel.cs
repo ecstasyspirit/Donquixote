@@ -67,7 +67,7 @@ namespace Donquixote.Models
                     break;
 
                 case StatusEnumModel.Attacking:
-                    Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhoneNumbersMessengerIndex} on {PhoneNumbersLoaded + ReEnqueuedPhoneNumbers} ({PhoneNumbersLoaded} imported + {ReEnqueuedPhoneNumbers} retries | Failed to message {MessagingFailed.Count} | {CalculateProgress()}% done";
+                    Console.Title = $"Donquixote :: {CurrentStatus} | Messaged {PhoneNumbersMessengerIndex} on {PhoneNumbersLoaded + ReEnqueuedPhoneNumbers} ({PhoneNumbersLoaded} imported + {ReEnqueuedPhoneNumbers} retries) | Failed to message {MessagingFailed.Count} | {CalculateProgress()}% done";
                     break;
             }
         }
@@ -209,7 +209,8 @@ namespace Donquixote.Models
                 AcceptEncoding = "br, gzip, deflate",
                 AcceptLanguage = "en;q=1",
                 Timeout = TimeSpan.FromSeconds(6),
-                NumberOfAttempts = 2                
+                NumberOfAttempts = 2,
+                Proxy = new Proxy("127.0.0.1:8888")
             };
 
             if (SelectedConnection == ConnectionEnumModel.Proxy)

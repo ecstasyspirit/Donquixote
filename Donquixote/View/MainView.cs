@@ -9,6 +9,8 @@ namespace Donquixote.View
 
         public MainView()
         {
+            CheckUpdate();
+
             SetSession();
 
             Attack();
@@ -17,6 +19,8 @@ namespace Donquixote.View
 
             Console.ReadKey(true);
         }
+
+        public void CheckUpdate() => MainController.CheckUpdate();
 
         public void SetSession()
         {

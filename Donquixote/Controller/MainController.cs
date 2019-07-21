@@ -34,6 +34,11 @@ namespace Donquixote.Controller
             }
         }
 
+        public void CheckUpdate()
+        {
+            
+        }
+
         public void ImportPhones()
         {
             Console.Write(MainModel.GenerateTimestamp() + "Importing phone numbers from 'numbers.txt'...");
